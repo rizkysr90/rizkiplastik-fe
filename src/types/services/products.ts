@@ -30,6 +30,7 @@ export interface Product {
   cost_price: number;
   shopee_sale_price: number;
   shopee_category: string;
+  gross_profit_percentage: number;
   // Add any other fields your Product struct has in Go
 }
 
@@ -39,4 +40,11 @@ export interface CreateProductRequest {
   cost_price: number;
   gross_profit_percentage: number;
   shopee_category: "A" | "B" | "C" | "D" | "E";
+}
+// Types for update product request
+export interface UpdateProductRequest {
+  name: string;
+  gross_profit_percentage: number;
+  shopee_category: string;
+  cost_price: number;
 }

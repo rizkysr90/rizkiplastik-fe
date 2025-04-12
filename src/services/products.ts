@@ -51,7 +51,7 @@ export const fetchProducts = async (
 ): Promise<Product[]> => {
   try {
     const queryString = params ? createQueryString(params) : "";
-    const response = await fetch(`${API_URL}/products${queryString}`, {
+    const response = await fetch(`${API_URL}/api/v1/products${queryString}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -72,12 +72,16 @@ export const fetchProducts = async (
  * @param id - The product ID
  * @returns Promise resolving to a product object
  */
-export const fetchProductById = async (id: string): Promise<Product> => {
+export const fetchProductById = async (
+  id: string,
+  authorization?: string
+): Promise<Product> => {
   try {
-    const response = await fetch(`${API_URL}/products/${id}`, {
+    const response = await fetch(`${API_URL}/api/v1/products/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${authorization}`,
       },
     });
 
@@ -101,7 +105,7 @@ export const fetchProductsWithPagination = async (
 ): Promise<GetProductsResponse> => {
   try {
     const queryString = params ? createQueryString(params) : "";
-    const response = await fetch(`${API_URL}/products${queryString}`, {
+    const response = await fetch(`${API_URL}/api/v1/products${queryString}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -115,4 +119,36 @@ export const fetchProductsWithPagination = async (
       ? error
       : new Error("Failed to fetch products with pagination");
   }
+};
+
+/**
+ * Delete a product by ID
+ * @param id - The ID of the product to delete
+ * @param token - Optional authentication token
+ * @returns A promise that resolves when the product is deleted
+ */
+export const deleteProduct = async (
+  id: string,
+  token?: string
+): Promise<void> => {
+  const headers: HeadersInit = {};
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const response = await fetch(`${API_URL}/api/v1/products/${id}`, {
+    method: "DELETE",
+    headers,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({
+      message: "An unknown error occurred",
+    }));
+    throw new Error(
+      errorData.message || `Failed to delete product: ${response.statusText}`
+    );
+  }
+
+  return;
 };

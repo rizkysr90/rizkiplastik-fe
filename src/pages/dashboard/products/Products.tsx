@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "../../../components/Card";
+import Modal from "../../../components/Modal";
+import { NotificationToast } from "../../../components/Notification";
 import { useAuth } from "../../../contexts/authContext";
-import { useProductsWithPagination } from "../../../hooks/product";
+import {
+  useDeleteProduct,
+  useProductsWithPagination,
+} from "../../../hooks/product";
 import { ProductCardProps } from "../../../types/products";
 import { Product, ProductsQueryParams } from "../../../types/services/products";
 
@@ -27,6 +32,52 @@ const Products: React.FC = () => {
     }));
   };
 
+  // Extract pagination metadata and products
+  const { metadata, data: products } = data || {
+    metadata: { page_number: 0, page_size: 10 },
+    data: [],
+  };
+  // Delete product functionality
+  // State for notifications
+  const [notification, setNotification] = useState<{
+    show: boolean;
+    message: string;
+    type: "success" | "error" | "info";
+  }>({
+    show: false,
+    message: "",
+    type: "info",
+  });
+  // Function to show notification
+  const showNotification = (
+    message: string,
+    type: "success" | "error" | "info"
+  ) => {
+    setNotification({
+      show: true,
+      message,
+      type,
+    });
+  };
+  // Function to hide notification
+  const hideNotification = () => {
+    setNotification((prev) => ({ ...prev, show: false }));
+  };
+  const {
+    isDeleteModalOpen,
+    openDeleteModal,
+    closeDeleteModal,
+    confirmDelete,
+    isDeleting,
+  } = useDeleteProduct({
+    onSuccess: () => {
+      showNotification("Product deleted successfully", "success");
+    },
+    onError: (error) => {
+      showNotification(`Error deleting product: ${error.message}`, "error");
+    },
+    token: token || undefined,
+  });
   if (isLoading) {
     return (
       <div>
@@ -42,15 +93,16 @@ const Products: React.FC = () => {
       </div>
     );
   }
-
-  // Extract pagination metadata and products
-  const { metadata, data: products } = data || {
-    metadata: { page_number: 0, page_size: 10 },
-    data: [],
-  };
-
   return (
     <div className="container mx-auto px-4 py-6">
+      {/* Notification */}
+      {notification.show && (
+        <NotificationToast
+          message={notification.message}
+          type={notification.type}
+          onClose={hideNotification}
+        />
+      )}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
         <h1 className="text-2xl font-bold mb-4 sm:mb-0">Products</h1>
         <button
@@ -86,7 +138,16 @@ const Products: React.FC = () => {
               shopeeCategory: product.shopee_category,
             };
 
-            return <Card key={product.id} {...productProps} />;
+            return (
+              <Card
+                key={product.id}
+                {...productProps}
+                onEdit={() =>
+                  navigate(`/dashboard/products/edit/${product.id}`)
+                }
+                onDelete={openDeleteModal}
+              />
+            );
           })}
       </div>
 
@@ -112,6 +173,35 @@ const Products: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={closeDeleteModal}
+        title="Confirm Delete"
+        footer={
+          <>
+            <button
+              onClick={closeDeleteModal}
+              className="px-4 py-2 text-gray-700 hover:text-gray-900 bg-gray-200 hover:bg-gray-300 rounded-md transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={confirmDelete}
+              className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors"
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </button>
+          </>
+        }
+      >
+        <p className="text-gray-700">
+          Are you sure you want to delete this product? This action cannot be
+          undone.
+        </p>
+      </Modal>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import ProtectedRoute from "./components/common/ProtectedRoute";
 import { AuthProvider } from "./contexts/authContext";
 import DashboardIndex from "./pages/dashboard/DashboardIndex";
 import CreateProduct from "./pages/dashboard/products/Create";
+import EditProduct from "./pages/dashboard/products/Edit";
 import Products from "./pages/dashboard/products/Products";
 import Settings from "./pages/dashboard/Settings";
 import LoginPage from "./pages/Login";
@@ -24,8 +25,8 @@ function App() {
             {/* Nested routes for dashboard content */}
             <Route path="products" element={<Products />} />
             <Route path="products/create" element={<CreateProduct />} />
+            <Route path="products/edit/:id" element={<EditProduct />} />
             {/* <Route path="products/:id" element={<ProductDetail />} /> */}
-            {/* <Route path="products/:id/edit" element={<EditProduct />} /> */}
             <Route path="settings" element={<Settings />} />
             {/* Redirect to products by default */}
             <Route index element={<Navigate to="products" replace />} />
