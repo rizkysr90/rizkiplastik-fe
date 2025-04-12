@@ -1,5 +1,14 @@
-import { ProductCardProps } from "../types/products";
 import { formatToRupiah } from "../utils/number";
+
+export interface ProductCardProps {
+  id: string;
+  name: string;
+  costPrice: number;
+  shopeePrice: number;
+  shopeeCategory: string;
+  onEdit?: (id: string) => void;
+  onDelete?: (id: string) => void;
+}
 
 const Card: React.FC<ProductCardProps> = ({
   id,

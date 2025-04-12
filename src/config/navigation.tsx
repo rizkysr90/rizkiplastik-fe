@@ -5,7 +5,7 @@ import {
   Settings,
   SquareStackIcon,
 } from "lucide-react";
-import { SidebarLink } from "../types/navigation";
+import { SidebarLink } from "./../components/layout/Sidebar";
 
 export const sidebarLinks: SidebarLink[] = [
   {

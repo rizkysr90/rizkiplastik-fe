@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import { Link } from "react-router-dom";
-import { SidebarLink } from "../../types/navigation.ts";
 
+export interface SidebarLink {
+  name: string;
+  path: string;
+  icon: ReactElement; // This will accept any React element, including Lucide icons
+}
 interface SidebarProps {
   logo?: React.ReactNode;
   links: SidebarLink[];

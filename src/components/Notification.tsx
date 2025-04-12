@@ -1,8 +1,9 @@
 import { useEffect } from "react";
+export type NotificationType = "success" | "error" | "info";
 
 interface NotificationProps {
   message: string;
-  type: "success" | "error" | "info";
+  type: NotificationType;
   onClose: () => void;
   duration?: number;
 }

@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Card from "../../../components/Card";
+import Card, { ProductCardProps } from "../../../components/Card";
 import Modal from "../../../components/Modal";
 import { NotificationToast } from "../../../components/Notification";
 import { useAuth } from "../../../contexts/authContext";
+import useNotification from "../../../hooks/notification";
 import {
   useDeleteProduct,
   useProductsWithPagination,
 } from "../../../hooks/product";
-import { ProductCardProps } from "../../../types/products";
 import { Product, ProductsQueryParams } from "../../../types/services/products";
 
 const Products: React.FC = () => {
   const navigate = useNavigate();
-  const { token } = useAuth(); // State for pagination
+  const { token } = useAuth();
+  // State for pagination
   const [queryParams, setQueryParams] = useState<ProductsQueryParams>({
     page_number: 0,
     page_size: 10,
@@ -38,31 +39,10 @@ const Products: React.FC = () => {
     data: [],
   };
   // Delete product functionality
-  // State for notifications
-  const [notification, setNotification] = useState<{
-    show: boolean;
-    message: string;
-    type: "success" | "error" | "info";
-  }>({
-    show: false,
-    message: "",
-    type: "info",
-  });
   // Function to show notification
-  const showNotification = (
-    message: string,
-    type: "success" | "error" | "info"
-  ) => {
-    setNotification({
-      show: true,
-      message,
-      type,
-    });
-  };
-  // Function to hide notification
-  const hideNotification = () => {
-    setNotification((prev) => ({ ...prev, show: false }));
-  };
+  const { notification, hideNotification, showNotification } =
+    useNotification();
+
   const {
     isDeleteModalOpen,
     openDeleteModal,

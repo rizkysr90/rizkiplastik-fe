@@ -1,8 +1,12 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RupiahInput from "../../../components/common/RupiahInput";
+import PercentageInput from "../../../components/inputs/PercentageInput";
+import SelectInput from "../../../components/inputs/SelectInputShopeeCategory";
+import { SHOPEE_CATEGORIES } from "../../../constants/constants";
 import { useAuth } from "../../../contexts/authContext";
 import { CreateProductRequest } from "../../../types/services/products";
+import ProductTextInput from "./components/ProductTextInput";
 
 const CreateProduct = () => {
   const API_URL =
@@ -88,25 +92,16 @@ const CreateProduct = () => {
 
       <div className="bg-white shadow-md rounded-lg p-6">
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              htmlFor="name"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              Product Name*
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              maxLength={50}
-              required
-            />
-            <p className="text-sm text-gray-500 mt-1">Maximum 50 characters</p>
-          </div>
+          <ProductTextInput
+            id="name"
+            name="name"
+            label="Product Name"
+            value={formData.name}
+            onChange={handleChange}
+            maxLength={50}
+            required
+            error={""}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
@@ -124,55 +119,31 @@ const CreateProduct = () => {
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="gross_profit_percentage"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Gross Profit Percentage*
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  id="gross_profit_percentage"
-                  name="gross_profit_percentage"
-                  value={formData.gross_profit_percentage}
-                  onChange={handleChange}
-                  className="w-full pr-8 pl-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  step="0.1"
-                  min="0"
-                  max="100"
-                  required
-                />
-                <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500">
-                  %
-                </span>
-              </div>
-            </div>
+            <PercentageInput
+              id="gross_profit_percentage"
+              name="gross_profit_percentage"
+              label="Gross Profit Percentage"
+              value={formData.gross_profit_percentage}
+              onChange={handleChange}
+              required
+              min={0}
+              max={100}
+              step="0.1"
+              error={""}
+              helperText="Enter a value between 0% and 100%"
+            />
           </div>
 
-          <div className="mb-6">
-            <label
-              htmlFor="shopee_category"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              Shopee Category*
-            </label>
-            <select
-              id="shopee_category"
-              name="shopee_category"
-              value={formData.shopee_category}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            >
-              <option value="A">Category A</option>
-              <option value="B">Category B</option>
-              <option value="C">Category C</option>
-              <option value="D">Category D</option>
-              <option value="E">Category E</option>
-            </select>
-          </div>
+          <SelectInput
+            id="shopee_category"
+            name="shopee_category"
+            label="Shopee Category"
+            value={formData.shopee_category}
+            onChange={handleChange}
+            options={SHOPEE_CATEGORIES}
+            required
+            error={""}
+          />
 
           <div className="flex flex-col sm:flex-row gap-3 justify-end">
             <button
