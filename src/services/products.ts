@@ -15,7 +15,7 @@ console.log(import.meta.env.BASE_URL_RIZKIPLASTIK_BE);
  * @param response Fetch response object
  * @returns Response if ok, throws error if not
  */
-const handleResponse = async <T>(response: Response): Promise<T> => {
+export const handleResponse = async <T>(response: Response): Promise<T> => {
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
     throw new Error(errorData.message || `API error: ${response.status}`);
@@ -39,32 +39,6 @@ const createQueryString = (params: ProductsQueryParams): string => {
 
   const queryString = searchParams.toString();
   return queryString ? `?${queryString}` : "";
-};
-
-/**
- * Fetches all products from the API
- * @param params Optional query parameters for pagination, sorting, etc.
- * @returns Promise resolving to an array of products
- */
-export const fetchProducts = async (
-  params?: ProductsQueryParams
-): Promise<Product[]> => {
-  try {
-    const queryString = params ? createQueryString(params) : "";
-    const response = await fetch(`${API_URL}/api/v1/products${queryString}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await handleResponse<GetProductsResponse>(response);
-    return data.data;
-  } catch (error) {
-    throw error instanceof Error
-      ? error
-      : new Error("Failed to fetch products");
-  }
 };
 
 /**

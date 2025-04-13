@@ -19,8 +19,7 @@ export interface GetProductResponse {
 export interface ProductsQueryParams {
   page_number?: number;
   page_size?: number;
-  sort?: string;
-  filter?: string;
+  name?: string;
   // Add any other query parameters your API supports
 }
 // Base Product type

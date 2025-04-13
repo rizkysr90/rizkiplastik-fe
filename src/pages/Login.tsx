@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
-import { LoginRequest, LoginResponse } from "../types/loginCredential";
+import { LoginRequest, LoginResponse } from "../types/services/loginCredential";
 
 const LoginPage: React.FC = () => {
   // Get API URL from environment variable

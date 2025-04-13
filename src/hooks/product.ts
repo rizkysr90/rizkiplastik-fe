@@ -9,7 +9,6 @@ import { useState } from "react";
 import {
   deleteProduct,
   fetchProductById,
-  fetchProducts,
   fetchProductsWithPagination,
 } from "../services/products";
 import {
@@ -26,33 +25,6 @@ export const queryKeys = {
   productsPaginated: (params?: ProductsQueryParams) =>
     ["products", "paginated", params] as const,
   product: (id: string) => ["product", id] as const,
-};
-
-/**
- * Custom hook to fetch all products
- * @returns TanStack query result for products
- */
-export const useProducts = (): UseQueryResult<Product[], Error> => {
-  return useQuery({
-    queryKey: queryKeys.products,
-    queryFn: () => fetchProducts(),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  });
-};
-
-/**
- * Custom hook to fetch products with query parameters
- * @param params Query parameters for filtering, sorting, etc.
- * @returns TanStack query result for products
- */
-export const useProductsList = (
-  params?: ProductsQueryParams
-): UseQueryResult<Product[], Error> => {
-  return useQuery({
-    queryKey: queryKeys.productsList(params),
-    queryFn: () => fetchProducts(params),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  });
 };
 
 /**

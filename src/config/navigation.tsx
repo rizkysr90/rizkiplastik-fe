@@ -2,6 +2,7 @@
 import {
   BarChart2,
   LayoutDashboard,
+  SatelliteDishIcon,
   Settings,
   SquareStackIcon,
 } from "lucide-react";
@@ -12,6 +13,11 @@ export const sidebarLinks: SidebarLink[] = [
     name: "Dashboard",
     path: "/dashboard",
     icon: <LayoutDashboard size={20} />,
+  },
+  {
+    name: "Online Transactions",
+    path: "/dashboard/online-transactions",
+    icon: <SatelliteDishIcon size={20} />,
   },
   {
     name: "Analytics",

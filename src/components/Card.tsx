@@ -8,6 +8,7 @@ export interface ProductCardProps {
   shopeeCategory: string;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
+  onAddToTransaction?: (id: string) => void; // New prop for adding to transaction
 }
 
 const Card: React.FC<ProductCardProps> = ({
@@ -18,6 +19,7 @@ const Card: React.FC<ProductCardProps> = ({
   shopeeCategory,
   onEdit,
   onDelete,
+  onAddToTransaction,
 }) => {
   return (
     <div className="relative bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full">
@@ -51,18 +53,44 @@ const Card: React.FC<ProductCardProps> = ({
 
       {/* Action buttons */}
       <div className="px-4 py-3 bg-gray-50 border-t border-gray-100 flex justify-between">
-        <button
-          onClick={() => onEdit && onEdit(id)}
-          className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => onDelete && onDelete(id)}
-          className="text-sm font-medium text-red-600 hover:text-red-800 transition-colors"
-        >
-          Delete
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={() => onEdit && onEdit(id)}
+            className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => onDelete && onDelete(id)}
+            className="text-sm font-medium text-red-600 hover:text-red-800 transition-colors"
+          >
+            Delete
+          </button>
+        </div>
+
+        {/* Add to Transaction button */}
+        {onAddToTransaction && (
+          <button
+            onClick={() => onAddToTransaction(id)}
+            className="text-sm font-medium text-green-600 hover:text-green-800 transition-colors flex items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Add
+          </button>
+        )}
       </div>
     </div>
   );
