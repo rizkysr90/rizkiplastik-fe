@@ -22,7 +22,10 @@ const EditProduct = () => {
   const [formData, setFormData] = useState<UpdateProductRequest>({
     name: "",
     gross_profit_percentage: 0,
+    varian_gross_profit_percentage: undefined,
     shopee_category: "A",
+    shopee_varian_name: "",
+    shopee_name: "",
     cost_price: 0,
   });
 
@@ -37,13 +40,17 @@ const EditProduct = () => {
     queryFn: () => fetchProductById(id || "", token || undefined),
     enabled: !!id,
   });
+
   // Update form data when product data is loaded
   useEffect(() => {
     if (product) {
       setFormData({
         name: product.name,
         gross_profit_percentage: product.gross_profit_percentage,
+        varian_gross_profit_percentage: product.varian_gross_profit_percentage,
         shopee_category: product.shopee_category,
+        shopee_varian_name: product.shopee_varian_name || "",
+        shopee_name: product.shopee_name,
         cost_price: product.cost_price,
       });
     }
@@ -59,11 +66,14 @@ const EditProduct = () => {
     setFormData((prev) => ({
       ...prev,
       [name]:
-        name === "gross_profit_percentage" || name === "cost_price"
+        name === "gross_profit_percentage" ||
+          name === "varian_gross_profit_percentage" ||
+          name === "cost_price"
           ? parseFloat(value)
           : value,
     }));
   };
+
   // Handle form submission
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -93,7 +103,6 @@ const EditProduct = () => {
         throw new Error(errorData.message || "Failed to update product");
       }
 
-      // Successfully updated product, navigate back to products list
       navigate("/dashboard/products");
     } catch (err) {
       setError(
@@ -103,6 +112,7 @@ const EditProduct = () => {
       setIsLoading(false);
     }
   };
+
   // Show loading state while fetching product data
   if (isLoadingProduct) {
     return (
@@ -113,6 +123,7 @@ const EditProduct = () => {
       </div>
     );
   }
+
   // Show error if fetching product failed
   if (isError) {
     return (
@@ -132,6 +143,7 @@ const EditProduct = () => {
       </div>
     );
   }
+
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="mb-6">
@@ -158,7 +170,28 @@ const EditProduct = () => {
             error={""}
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <ProductTextInput
+            id="shopee_name"
+            name="shopee_name"
+            label="Shopee Name"
+            value={formData.shopee_name}
+            onChange={handleChange}
+            maxLength={100}
+            required
+            error={""}
+          />
+
+          <ProductTextInput
+            id="shopee_varian_name"
+            name="shopee_varian_name"
+            label="Shopee Varian Name"
+            value={formData.shopee_varian_name || ""}
+            onChange={handleChange}
+            maxLength={100}
+            error={""}
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
               <label
                 htmlFor="cost_price"
@@ -168,8 +201,9 @@ const EditProduct = () => {
               </label>
               <RupiahInput
                 name="cost_price"
-                value={product?.cost_price || 0}
+                value={formData.cost_price}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -185,6 +219,19 @@ const EditProduct = () => {
               step="0.1"
               error={""}
               helperText="Enter a value between 0% and 100%"
+            />
+
+            <PercentageInput
+              id="varian_gross_profit_percentage"
+              name="varian_gross_profit_percentage"
+              label="Varian Gross Profit Percentage"
+              value={formData.varian_gross_profit_percentage || 0}
+              onChange={handleChange}
+              min={0}
+              max={100}
+              step="0.1"
+              error={""}
+              helperText="Optional: Enter a value between 0% and 100%"
             />
           </div>
 
@@ -221,7 +268,7 @@ const EditProduct = () => {
             error={""}
           />
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-end">
+          <div className="flex flex-col sm:flex-row gap-3 justify-end mt-6">
             <button
               type="button"
               onClick={() => navigate("/dashboard/products")}
