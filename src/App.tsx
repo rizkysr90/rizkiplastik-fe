@@ -3,6 +3,7 @@ import ProtectedRoute from "./components/common/ProtectedRoute";
 import { AuthProvider } from "./contexts/authContext";
 import { TransactionProvider } from "./contexts/onlineTransactionContext";
 import DashboardIndex from "./pages/dashboard/DashboardIndex";
+import AutoInput from "./pages/dashboard/onlinetransactions/AutoInput";
 import { OnlineTransactionDetailPage } from "./pages/dashboard/onlinetransactions/DetailOnlineTransaction";
 import OnlineTransaction from "./pages/dashboard/onlinetransactions/OnlineTransaction";
 import CreateProduct from "./pages/dashboard/products/Create";
@@ -39,6 +40,10 @@ function App() {
               <Route
                 path="online-transactions/:id"
                 element={<OnlineTransactionDetailPage />}
+              />
+              <Route
+                path="online-transactions/auto-input"
+                element={<AutoInput />}
               />
               <Route path="settings" element={<Settings />} />
               {/* Redirect to products by default */}

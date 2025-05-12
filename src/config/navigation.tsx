@@ -20,6 +20,11 @@ export const sidebarLinks: SidebarLink[] = [
     icon: <SatelliteDishIcon size={20} />,
   },
   {
+    name: "Auto Input",
+    path: "/dashboard/online-transactions/auto-input",
+    icon: <SatelliteDishIcon size={20} />,
+  },
+  {
     name: "Analytics",
     path: "/dashboard/analytics",
     icon: <BarChart2 size={20} />,

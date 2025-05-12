@@ -11,7 +11,7 @@ import ProductTextInput from "./components/ProductTextInput";
 const CreateProduct = () => {
   const API_URL =
     import.meta.env.VITE_BASE_URL_RIZKIPLASTIK_BE || "http://localhost:8080";
-  const { token } = useAuth(); // State for pagination
+  const { token } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -19,8 +19,12 @@ const CreateProduct = () => {
     name: "",
     cost_price: 0,
     gross_profit_percentage: 0,
+    varian_gross_profit_percentage: undefined,
     shopee_category: "A",
+    shopee_varian_name: "",
+    shopee_name: "",
   });
+
   // Handle input changes
   const handleChange = (
     e:
@@ -31,7 +35,9 @@ const CreateProduct = () => {
     setFormData((prev) => ({
       ...prev,
       [name]:
-        name === "cost_price" || name === "gross_profit_percentage"
+        name === "cost_price" ||
+          name === "gross_profit_percentage" ||
+          name === "varian_gross_profit_percentage"
           ? parseFloat(value)
           : value,
     }));
@@ -44,8 +50,6 @@ const CreateProduct = () => {
     setIsLoading(true);
 
     try {
-      // Get token from localStorage
-
       if (!token) {
         throw new Error("Authentication token is missing");
       }
@@ -64,7 +68,6 @@ const CreateProduct = () => {
         throw new Error(errorData.message || "Failed to create product");
       }
 
-      // Successfully created product, navigate back to products list
       navigate("/dashboard/products");
     } catch (err) {
       setError(
@@ -103,7 +106,28 @@ const CreateProduct = () => {
             error={""}
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <ProductTextInput
+            id="shopee_name"
+            name="shopee_name"
+            label="Shopee Name"
+            value={formData.shopee_name}
+            onChange={handleChange}
+            maxLength={100}
+            required
+            error={""}
+          />
+
+          <ProductTextInput
+            id="shopee_varian_name"
+            name="shopee_varian_name"
+            label="Shopee Varian Name"
+            value={formData.shopee_varian_name || ""}
+            onChange={handleChange}
+            maxLength={100}
+            error={""}
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
               <label
                 htmlFor="cost_price"
@@ -132,6 +156,19 @@ const CreateProduct = () => {
               error={""}
               helperText="Enter a value between 0% and 100%"
             />
+
+            <PercentageInput
+              id="varian_gross_profit_percentage"
+              name="varian_gross_profit_percentage"
+              label="Varian Gross Profit Percentage"
+              value={formData.varian_gross_profit_percentage || 0}
+              onChange={handleChange}
+              min={0}
+              max={100}
+              step="0.1"
+              error={""}
+              helperText="Optional: Enter a value between 0% and 100%"
+            />
           </div>
 
           <SelectInput
@@ -145,7 +182,7 @@ const CreateProduct = () => {
             error={""}
           />
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-end">
+          <div className="flex flex-col sm:flex-row gap-3 justify-end mt-6">
             <button
               type="button"
               onClick={() => navigate("/dashboard/products")}

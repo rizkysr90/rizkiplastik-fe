@@ -28,9 +28,11 @@ export interface Product {
   name: string;
   cost_price: number;
   shopee_sale_price: number;
-  shopee_category: string;
+  shopee_category: "A" | "B" | "C" | "D" | "E";
   gross_profit_percentage: number;
-  // Add any other fields your Product struct has in Go
+  varian_gross_profit_percentage?: number;
+  shopee_varian_name?: string;
+  shopee_name: string;
 }
 
 // Types for the Create Product request
@@ -38,12 +40,18 @@ export interface CreateProductRequest {
   name: string;
   cost_price: number;
   gross_profit_percentage: number;
+  varian_gross_profit_percentage?: number;
   shopee_category: "A" | "B" | "C" | "D" | "E";
+  shopee_varian_name?: string;
+  shopee_name: string;
 }
 // Types for update product request
 export interface UpdateProductRequest {
   name: string;
   gross_profit_percentage: number;
-  shopee_category: string;
+  varian_gross_profit_percentage?: number;
+  shopee_category: "A" | "B" | "C" | "D" | "E";
+  shopee_varian_name?: string;
+  shopee_name: string;
   cost_price: number;
 }
