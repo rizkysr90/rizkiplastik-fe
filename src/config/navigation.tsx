@@ -1,5 +1,6 @@
 // Import React to use JSX in the icons
 import {
+  Banknote,
   BarChart2,
   LayoutDashboard,
   SatelliteDishIcon,
@@ -9,6 +10,11 @@ import {
 import { SidebarLink } from "./../components/layout/Sidebar";
 
 export const sidebarLinks: SidebarLink[] = [
+  {
+    name: "Summary",
+    path: "/dashboard/summaries",
+    icon: <Banknote size={20} />,
+  },
   {
     name: "Dashboard",
     path: "/dashboard",

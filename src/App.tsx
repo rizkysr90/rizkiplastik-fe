@@ -10,6 +10,7 @@ import CreateProduct from "./pages/dashboard/products/Create";
 import EditProduct from "./pages/dashboard/products/Edit";
 import Products from "./pages/dashboard/products/Products";
 import Settings from "./pages/dashboard/Settings";
+import Summaries from "./pages/dashboard/summaries/Summaries";
 import LoginPage from "./pages/Login";
 
 function App() {
@@ -37,6 +38,9 @@ function App() {
                 path="online-transactions"
                 element={<OnlineTransaction />}
               />
+              {/* New route for summaries */}
+              <Route path="summaries" element={<Summaries />} />
+
               <Route
                 path="online-transactions/:id"
                 element={<OnlineTransactionDetailPage />}

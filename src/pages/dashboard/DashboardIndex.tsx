@@ -7,13 +7,13 @@ const DashboardIndex = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <div className="flex">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar
         links={sidebarLinks}
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
       />
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 overflow-y-auto">
         {/* Outlet renders the matching child route */}
         <Outlet />
       </main>

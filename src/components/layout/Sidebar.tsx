@@ -84,10 +84,9 @@ const Sidebar = ({
                 to={link.path}
                 className={`
                   flex items-center px-4 py-3 transition-colors
-                  ${
-                    activeLink === link.path
-                      ? "bg-blibli-700"
-                      : "hover:bg-blibli-800"
+                  ${activeLink === link.path
+                    ? "bg-blibli-700"
+                    : "hover:bg-blibli-800"
                   }
                 `}
                 onClick={() => {
